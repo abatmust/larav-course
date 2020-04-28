@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Scope;
 class LatestScope implements Scope
 {
    public function apply(Builder $builder, Model $model){
-        $builder->orderBy('updated_at', 'asc');
+        $builder->orderBy('updated_at', 'desc');
    } 
 }
 

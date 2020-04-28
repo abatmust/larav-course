@@ -7,6 +7,7 @@ use App\Http\Requests\StorePost;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Cache;
 
 // use Illuminate\Support\Facades\DB;
 
@@ -25,14 +26,25 @@ class PostController extends Controller
      */
     public function index()
     {
-     
+        // $posts = Cache::remember('posts', now()->addSeconds(10), function(){
+        //     Post::withCount('comments')->with('user')->get();
+        // });
+        $mostCommented = Cache::remember('mostCommented', now()->addSeconds(10), function(){
+            return Post::withCount('comments')->with('user')->get();
+        });
+        $mostActiveUsers = Cache::remember('mostActiveUsers', now()->addSeconds(10), function(){
+            return User::mostActiveUsers()->take(5)->get();
+        });
+        $lastMonthMostActiveUsers = Cache::remember('lastMonthMostActiveUsers', now()->addSeconds(10), function(){
+            return User::lastMonthMostActiveUsers()->take(5)->get();
+        });
         return view(
             'posts.index', 
             [
-                'posts' => Post::withCount('comments')->get(),
-                'mostCommented' => Post::mostCommented()->take(5)->get(),
-                'mostActiveUsers' => User::mostActiveUsers()->take(5)->get(),
-                'lastMonthMostActiveUsers' => User::lastMonthMostActiveUsers()->take(5)->get(),
+                'posts' => Post::withCount('comments')->with('user')->get(),
+                'mostCommented' => $mostCommented,
+                'mostActiveUsers' =>  $mostActiveUsers ,
+                'lastMonthMostActiveUsers' => $lastMonthMostActiveUsers,
                 'tab'=>'list'
                 ]
         );
@@ -85,8 +97,11 @@ class PostController extends Controller
      */
     public function show($id)
     {
+        $postShow = Cache::remember("post-show-{$id}", 120, function() use ($id){
+            return Post::with('comments')->findOrFail($id);
+        });
         return view('posts.show', [
-            'post' => Post::with('comments')->findOrFail($id)
+            'post' => $postShow
         ]);
     }
 

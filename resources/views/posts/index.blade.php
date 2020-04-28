@@ -11,6 +11,14 @@
         <div class="badge badge-success p-2">{{App\Comment::count()}}</div>
             @forelse ($posts as $post)
                 <p>
+            @if($post->created_at->diffInHours() < 1)
+               
+               <x-badge type="success">New</x-badge>
+            @else
+
+            <x-badge type="info">Old</x-badge>
+            @endif
+
                     <h3>
                         <a href="{{ route('posts.show', ['post' => $post->id]) }}">
                             @if ($post->trashed())
@@ -24,14 +32,16 @@
                         
                         </a>
                     </h3>
-
-                <p class="text-muted">{{$post->updated_at->diffForHumans()}}, by {{$post->user->name}}</p>
-        
+                    <x-updated :date="$post->updated_at" :name="$post->user->name">Updated</x-updated>
+                    <x-updated :date="$post->created_at"></x-updated>
+                
+               
                     @if($post->comments_count)
                         <p>{{ $post->comments_count }} comments</p>
                     @else
                         <p>No comments yet!</p>
                     @endif
+                    @auth
                     @can('update', $post)
                     <a href="{{ route('posts.edit', ['post' => $post->id]) }}"
                         class="btn btn-outline-dark m-1">
@@ -40,7 +50,8 @@
                     @endcan
                 @if (!$post->deleted_at)
                 @cannot('delete', $post)
-                    <span class="badge badge-danger">You can't delete this post</span>
+                <x-badge type="danger">You can't delete this post</x-badge>
+                   
                 @endcannot
                 @can('delete', $post)
                     <form method="POST" class="fm-inline"
@@ -71,6 +82,7 @@
                     </form>
                     @endcan
                 @endif
+                @endauth
                 </p>
             @empty
                 <p>No blog posts yet!</p>
