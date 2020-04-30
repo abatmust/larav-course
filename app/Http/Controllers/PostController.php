@@ -41,7 +41,7 @@ class PostController extends Controller
         return view(
             'posts.index', 
             [
-                'posts' => Post::withCount('comments')->with('user')->get(),
+                'posts' => Post::withCount('comments')->with(['user', 'tags'])->get(),
                 'mostCommented' => $mostCommented,
                 'mostActiveUsers' =>  $mostActiveUsers ,
                 'lastMonthMostActiveUsers' => $lastMonthMostActiveUsers,

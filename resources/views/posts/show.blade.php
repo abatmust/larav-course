@@ -3,6 +3,8 @@
 @section('content')
     <h1>{{ $post->title }}</h1>
     <p>{{ $post->content }}</p>
+    
+    <x-tags :tags="$post->tags"></x-tags>
 
     <p>Added {{ $post->created_at->diffForHumans() }}</p>
 

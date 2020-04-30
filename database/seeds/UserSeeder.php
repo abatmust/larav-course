@@ -13,7 +13,7 @@ class UserSeeder extends Seeder
     {
         //
 
-        $number_of_users = (int)$this->command->ask("how many users do you want ?", 10);
+        $number_of_users = (int)$this->command->ask("how many users do you want ?", 5);
         factory(App\User::class,$number_of_users)->create();
     }
 }

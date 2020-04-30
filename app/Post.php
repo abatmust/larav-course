@@ -45,4 +45,7 @@ class Post extends Model
             $post->comments()->restore();
         });
     }
+    public function tags(){
+        return $this->belongsToMany('App\Tag')->withTimestamps();
+    }
 }
