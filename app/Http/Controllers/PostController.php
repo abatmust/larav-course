@@ -29,22 +29,11 @@ class PostController extends Controller
         // $posts = Cache::remember('posts', now()->addSeconds(10), function(){
         //     Post::withCount('comments')->with('user')->get();
         // });
-        $mostCommented = Cache::remember('mostCommented', now()->addSeconds(10), function(){
-            return Post::withCount('comments')->with('user')->get();
-        });
-        $mostActiveUsers = Cache::remember('mostActiveUsers', now()->addSeconds(10), function(){
-            return User::mostActiveUsers()->take(5)->get();
-        });
-        $lastMonthMostActiveUsers = Cache::remember('lastMonthMostActiveUsers', now()->addSeconds(10), function(){
-            return User::lastMonthMostActiveUsers()->take(5)->get();
-        });
+       
         return view(
             'posts.index', 
             [
                 'posts' => Post::withCount('comments')->with(['user', 'tags'])->get(),
-                'mostCommented' => $mostCommented,
-                'mostActiveUsers' =>  $mostActiveUsers ,
-                'lastMonthMostActiveUsers' => $lastMonthMostActiveUsers,
                 'tab'=>'list'
                 ]
         );
@@ -98,7 +87,7 @@ class PostController extends Controller
     public function show($id)
     {
         $postShow = Cache::remember("post-show-{$id}", 120, function() use ($id){
-            return Post::with('comments')->findOrFail($id);
+            return Post::with(['comments', 'tags'])->findOrFail($id);
         });
         return view('posts.show', [
             'post' => $postShow

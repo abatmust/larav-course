@@ -12,8 +12,11 @@ class CommentSeeder extends Seeder
     public function run()
     {
         $posts = App\Post::all();
-        factory(App\Comment::class,100)->make()->each(function($comment) use ($posts){
+        $users = App\User::all();
+        factory(App\Comment::class,100)->make()->each(function($comment) use ($posts, $users){
             $comment->post_id = $posts->random()->id;
+            $comment->user_id = $users->random()->id;
+
             $comment->save();
         });
     }

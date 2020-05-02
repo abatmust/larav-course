@@ -91,58 +91,11 @@
        
     </div>
     <div class="col-4">
-        <div class="card">
-           
-            <div class="card-body">
-                <h4 class="card-title">MOST COMMENTED POSTS</h4>
-                
-            </div>
-            <ul class="list-group list-group-flush">
-                @foreach ($mostCommented as $post)
-                    
-                <li class="list-group-item">
-                    <a href="">{{$post->title}}</a>
-                    <p> <span class="badge badge-success">{{ $post->comments_count }}</span> comments</p>
-                </li>
-                @endforeach
-                
-            </ul>
-        </div>
         
-        <div class="card mt-3">
-           
-            <div class="card-body">
-                <h4 class="card-title">MOST ACTIVE USERS</h4>
-                
-            </div>
-            <ul class="list-group list-group-flush">
-                @foreach ($mostActiveUsers as $user)
-                    
-                <li class="list-group-item">
-                    
-                    <p> <span class="badge badge-success">{{ $user->posts_count }}</span> {{$user->name}}</p>
-                </li>
-                @endforeach
-                
-            </ul>
-        </div>
-        <div class="card mt-3">
-           
-            <div class="card-body">
-                <h4 class="card-title">LAST MONTH MOST ACTIVE USERS</h4>
-                
-            </div>
-            <ul class="list-group list-group-flush">
-                @foreach ($lastMonthMostActiveUsers as $user)
-                    
-                <li class="list-group-item">
-                    
-                    <p> <span class="badge badge-success">{{ $user->posts_count }}</span> {{$user->name}}</p>
-                </li>
-                @endforeach
-                
-            </ul>
-        </div>
+        
+        @include('posts.sidebar')
+        
+        
     </div>
 </div>
 @endsection('content')

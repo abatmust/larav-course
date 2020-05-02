@@ -27,6 +27,9 @@ Route::get('/posts/archive', 'PostController@archive');
 Route::get('/posts/all', 'PostController@all');
 Route::resource('/posts', 'PostController');
 
+Route::get('/posts/tag/{id}', 'PostTagController@index')->name('posts.tag.index');
+
+
 Auth::routes();
 
 
