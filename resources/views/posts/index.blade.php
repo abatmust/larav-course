@@ -45,7 +45,7 @@
                     @auth
                     @can('update', $post)
                     <a href="{{ route('posts.edit', ['post' => $post->id]) }}"
-                        class="btn btn-outline-dark m-1">
+                        class="btn btn-info btn-sm m-1">
                         Edit
                     </a>
                     @endcan
@@ -60,7 +60,7 @@
                         @csrf
                         @method('DELETE')
         
-                        <input type="submit" value="Delete!" class="btn btn-outline-danger m-1"/>
+                        <input type="submit" value="Delete!" class="btn btn-dark btn-sm m-1"/>
                     </form>
                 @endcan
                 @else
@@ -70,7 +70,7 @@
                         @csrf
                         @method('PATCH')
         
-                        <input type="submit" value="restore" class="btn btn-outline-success m-1"/>
+                        <input type="submit" value="restore" class="btn btn-success btn-sm m-1"/>
                     </form>
                     @endcan
                     @can('forcedelete', $post)
@@ -79,7 +79,7 @@
                         @csrf
                         @method('DELETE')
         
-                        <input type="submit" value="Force delete" class="btn btn-outline-danger m-1"/>
+                        <input type="submit" value="Force delete" class="btn btn-danger btn-sm m-1"/>
                     </form>
                     @endcan
                 @endif

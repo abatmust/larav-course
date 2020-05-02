@@ -25,9 +25,14 @@ class Post extends Model
     public function user(){
         return $this->belongsTo(User::class);
     }
+
     public function scopeMostCommented(Builder $query){
         return $query->withCount('comments')->orderBy('comments_count', 'desc');
     }
+    public function scopeWithCommentsCtUserTags(Builder $query){
+        return $query->withCount('comments')->with(['user', 'tags']);
+    }
+
     public static function boot(){
         static::addGlobalScope(new AdminShowDeletedScope);
         parent::boot();

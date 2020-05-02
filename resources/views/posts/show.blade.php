@@ -14,8 +14,8 @@
         <strong>New!</strong>
         @endif
 
-        @include('comments.form')
-        
+        @include('comments.form', ['id'=> $post->id])
+        <hr>
         <h4>Comments</h4>
 
         @forelse($post->comments as $comment)

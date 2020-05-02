@@ -32,9 +32,10 @@ class PostController extends Controller
        
         return view(
             'posts.index', 
-            [
-                'posts' => Post::withCount('comments')->with(['user', 'tags'])->get(),
-                'tab'=>'list'
+                [
+                    
+                'posts' => Post::withCommentsCtUserTags()->get()
+        
                 ]
         );
     }
@@ -87,7 +88,7 @@ class PostController extends Controller
     public function show($id)
     {
         $postShow = Cache::remember("post-show-{$id}", 120, function() use ($id){
-            return Post::with(['comments', 'tags'])->findOrFail($id);
+            return Post::with(['comments', 'tags', 'comments.user'])->findOrFail($id);
         });
         return view('posts.show', [
             'post' => $postShow
