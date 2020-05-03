@@ -33,6 +33,10 @@ class Post extends Model
         return $query->withCount('comments')->with(['user', 'tags']);
     }
 
+    public function image(){
+        return $this->hasOne(Image::class);
+    }
+
     public static function boot(){
         static::addGlobalScope(new AdminShowDeletedScope);
         parent::boot();

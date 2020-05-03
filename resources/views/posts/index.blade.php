@@ -19,6 +19,13 @@
             <x-badge type="info">Old</x-badge>
             @endif
 
+
+                {{-- <img src="http://localhost:8000/storage/{{$post->image->path ?? null}}" class="img-fluid rounded" alt=""> --}}
+                {{-- <img src="{{ asset($post->image->path ?? null)}}" class="img-fluid rounded" alt=""> --}}
+                @if ($post->image)
+                    <img src="{{ $post->image->url() }}" class="img-fluid rounded mt-4" alt=""> 
+                @endif
+
                     <h3>
                         <a href="{{ route('posts.show', ['post' => $post->id]) }}">
                             @if ($post->trashed())

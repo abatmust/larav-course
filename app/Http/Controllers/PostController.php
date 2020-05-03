@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Post;
 use App\Http\Requests\StorePost;
+use App\Image;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
 
 // use Illuminate\Support\Facades\DB;
 
@@ -103,12 +105,39 @@ class PostController extends Controller
 
     public function store(StorePost $request)
     {
+
+
+        
+        
+        
         $validatedData = $request->validated();
         $validatedData['user_id'] = $request->user()->id;
-        $Post = Post::create($validatedData);
+        $post = Post::create($validatedData);
+        
+        $hasFile = $request->hasFile('picture');
+        //dump($hasFile);
+        if($hasFile){
+            $file = $request->file('picture');
+            $path = $file->store('posts');
+            $image = new Image(['path' => $path]);
+            $post->image()->save($image);
+            //dump($file);
+            //dump($file->getClientMimeType());
+            // dump($file->getClientOriginalExtension());
+            // dump($file->getClientOriginalName());
+
+            // dump($file->store('logos'));
+            // dump(Storage::putFile('thumb', $file));
+            // dump(Storage::disk('public')->putFile('thumbStor', $file));
+            // $name1 = $file->storeAs('mylogos', random_int(1,100) . '.' . $file->guessExtension());
+            // $name2 = Storage::disk('local')->putFileAs('mylogos', $file, random_int(1,100) . '.' . $file->guessExtension());
+            // dump(Storage::url($name1));
+            // dump(Storage::disk('local')->url($name2));
+        }
+
         $request->session()->flash('status', 'Blog post was created!');
 
-        return redirect()->route('posts.show', ['post' => $Post->id]);
+        return redirect()->route('posts.show', ['post' => $post->id]);
     }
 
     public function edit($id)
@@ -125,6 +154,28 @@ class PostController extends Controller
         //     abort(403,'You are not supposed to be here!!');
         // }
         $this->authorize('update', $post);
+
+        
+        $hasFile = $request->hasFile('picture');
+        if($hasFile){
+            $file = $request->file('picture');
+            $path = $file->store('posts');
+            if($post->image){
+                Storage::delete($post->image->path);
+                $post->image->path = $path;
+                $post->image->save();
+            }
+            else
+            {
+
+                $post->image()->save(Image::create(['path'=> $path]));
+                
+            }
+            $image = new Image(['path' => $path]);
+            $post->image()->save($image);
+            
+        }
+
         
         $validatedData = $request->validated();
         
