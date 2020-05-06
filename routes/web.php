@@ -25,17 +25,17 @@ Route::delete('/posts/{id}/forcedelete', 'PostController@forcedelete');
 Route::get('/posts/archive', 'PostController@archive');
 
 Route::get('/posts/all', 'PostController@all');
-Route::resource('/posts', 'PostController');
+Route::resource('posts', 'PostController');
 
 Route::get('/posts/tag/{id}', 'PostTagController@index')->name('posts.tag.index');
 
 Route::resource('posts.comments', 'PostCommentController')->only(['store']);
 Auth::routes();
 
+Route::resource('users','UserController')->only(['show', 'update', 'edit']);
 
+Route::resource('users.comments', 'UserCommentController')->only(['store']);
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/user', function () {
-    return App\User::all();
-});
+
 

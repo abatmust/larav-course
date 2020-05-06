@@ -39,7 +39,7 @@
                         
                         </a>
                     </h3>
-                    <x-updated :date="$post->updated_at" :name="$post->user->name">Updated</x-updated>
+                    <x-updated :date="$post->updated_at" :name="$post->user->name" :user-id="$post->user->id">Updated</x-updated>
                     <x-updated :date="$post->created_at"></x-updated>
                     
                     <x-tags :tags="$post->tags"></x-tags>

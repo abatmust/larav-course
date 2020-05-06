@@ -20,7 +20,7 @@ class Post extends Model
 
     public function comments()
     {
-        return $this->hasMany('App\Comment')->dernier();
+        return $this->morphMany('App\Comment', 'commentable')->dernier();
     }
     public function user(){
         return $this->belongsTo(User::class);
@@ -34,7 +34,7 @@ class Post extends Model
     }
 
     public function image(){
-        return $this->hasOne(Image::class);
+        return $this->morphOne('App\image', 'imageable');
     }
 
     public static function boot(){

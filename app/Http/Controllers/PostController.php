@@ -119,8 +119,16 @@ class PostController extends Controller
         if($hasFile){
             $file = $request->file('picture');
             $path = $file->store('posts');
-            $image = new Image(['path' => $path]);
-            $post->image()->save($image);
+            /*
+            $image = new Image(['path' => $path]); 
+            $post->image()->save($image);    
+            it works
+            */
+            /*
+            $post->image()->save(Image::create(['path' => $path]));
+            it doesnt work, the solution is below
+            */
+            $post->image()->save(Image::make(['path' => $path]));
             //dump($file);
             //dump($file->getClientMimeType());
             // dump($file->getClientOriginalExtension());
@@ -168,8 +176,8 @@ class PostController extends Controller
             else
             {
 
-                $post->image()->save(Image::create(['path'=> $path]));
-                
+                $post->image()->save(Image::make(['path'=> $path]));
+
             }
             $image = new Image(['path' => $path]);
             $post->image()->save($image);

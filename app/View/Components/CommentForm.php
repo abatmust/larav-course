@@ -4,22 +4,17 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 
-class updated extends Component
+class CommentForm extends Component
 {
-    public $date;
-    public $name;
-    public $userId;
+    public $action;
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($date, $name = null, $userId = null)
+    public function __construct( $action = null)
     {
-        //
-        $this->date = $date->diffForHumans();
-        $this->name = $name;
-        $this->userId = $userId;
+        $this->action = $action;
     }
 
     /**
@@ -29,6 +24,6 @@ class updated extends Component
      */
     public function render()
     {
-        return view('components.updated');
+        return view('components.comment-form');
     }
 }

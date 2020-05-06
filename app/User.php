@@ -31,9 +31,19 @@ class User extends Authenticatable
     public function posts(){
         return $this->hasMany(Post::class);
     }
-    public function comments(){
-        return $this->hasMany('App\Comment');
+    // public function comments(){
+    //     return $this->hasMany('App\Comment');
+    // }
+
+    public function image(){
+        return $this->morphOne('App\image', 'imageable');
     }
+
+    public function comments()
+    {
+        return $this->morphMany('App\Comment', 'commentable')->dernier();
+    }
+
     public function scopeMostActiveUsers(Builder $query){
         return $query->withCount('posts')->orderBy('posts_count', 'desc');
     }

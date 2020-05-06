@@ -14,6 +14,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
          'App\Post' => 'App\Policies\PostPolicy',
+         'App\User' => 'App\Policies\UserPolicy',
     ];
 
     /**
@@ -36,7 +37,12 @@ class AuthServiceProvider extends ServiceProvider
         //     return $user->id === $post->user_id; 
         // });
         Gate::before(function($user, $ability){
-            if($user->is_admin && in_array($ability, ['update'])){
+            if($user->is_admin && in_array($ability, ['update', 'show'])){
+                return true;
+            }
+        });
+        Gate::before(function($user, $ability){
+            if($user->is_admin){
                 return true;
             }
         });

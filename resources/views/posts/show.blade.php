@@ -17,20 +17,13 @@
         <strong>New!</strong>
         @endif
 
-        @include('comments.form', ['id'=> $post->id])
-        <hr>
+        {{-- @include('comments.form', ['id'=> $post->id]) --}}
         <h4>Comments</h4>
-
-        @forelse($post->comments as $comment)
-            <p>
-                {{ $comment->content }}
-            </p>
-            <p class="text-muted">
-                <x-updated :date="$comment->updated_at" :name="$comment->user->name"></x-updated>
-            </p>
-        @empty
-            <p>No comments yet!</p>
-        @endforelse
+        <x-comment-form :action="route('posts.comments.store', ['post' => $post->id])"></x-comment-form>
+        
+        <hr>
+        
+        <x-comment-list :comments="$post->comments"></x-comment-list>
     </div>
     <div class="col-4">
         @include('posts.sidebar')
